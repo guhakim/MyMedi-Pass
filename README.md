@@ -3,6 +3,8 @@
 > 모바일 신분증과 탈중앙화 DID 기반의 개인 주도형 의료 데이터 플랫폼  
 > 2026 블록체인 & AI 해커톤 | Track 2: MVP 모델 개발 및 시연 부문
 
+[Live Demo 바로가기](https://guhakim.github.io/MyMedi-Pass/) | [GitHub Repository](https://github.com/guhakim/MyMedi-Pass)
+
 ---
 
 ## 프로젝트 개요
@@ -30,7 +32,7 @@
 
 이 레포지토리는 별도 설치 없이 실행 가능한 모바일 MVP 웹앱을 포함합니다.
 
-1. `index.html` 파일을 브라우저에서 엽니다.
+1. [Live Demo](https://guhakim.github.io/MyMedi-Pass/)에 접속하거나 `index.html` 파일을 브라우저에서 엽니다.
 2. 하단 탭에서 `홈`, `지갑`, `청구`, `랭킹` 화면을 전환합니다.
 3. `청구` 화면의 `원클릭 청구하기` 버튼을 누르면 Omnione Chain 트랜잭션 생성 흐름이 시뮬레이션됩니다.
 
