@@ -26,6 +26,14 @@
 | 무서류 보험 청구 | `One-Click Claim` 흐름으로 `Omnione Chain` 스마트 컨트랙트 기반 청구 과정을 단순화합니다. |
 | 실시간 병원 인기세 | 블록체인 트랜잭션 수(`Tx`)를 기반으로 조작이 어려운 병원 순위와 트렌드를 제공합니다. |
 
+### 실행 방법
+
+이 레포지토리는 별도 설치 없이 실행 가능한 모바일 MVP 웹앱을 포함합니다.
+
+1. `index.html` 파일을 브라우저에서 엽니다.
+2. 하단 탭에서 `홈`, `지갑`, `청구`, `랭킹` 화면을 전환합니다.
+3. `청구` 화면의 `원클릭 청구하기` 버튼을 누르면 Omnione Chain 트랜잭션 생성 흐름이 시뮬레이션됩니다.
+
 ---
 
 ## 제안 배경
@@ -91,7 +99,7 @@ flowchart TD
 
 | 영역 | 기술 |
 | --- | --- |
-| Frontend | Flutter / React Native 기반 MVP 모바일 앱 아키텍처 |
+| Frontend | HTML, CSS, JavaScript 기반 모바일 PWA MVP |
 | Identity & Authentication | RaonSecure `Omnione CX`, Open Source `OpenDID` |
 | DID / VC | OpenDID SDK, Verifiable Credential, Selective Disclosure |
 | Blockchain | `Omnione Chain`, Solidity, Stage Network |

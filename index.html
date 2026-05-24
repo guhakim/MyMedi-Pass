@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <meta name="theme-color" content="#f7f9fc"/>
   <title>MyMedi Pass - 모바일 슈퍼앱</title>
   
   <!-- Tailwind CSS & Icon Fonts -->
@@ -107,6 +108,7 @@
     };
   </script>
 
+  <link rel="manifest" href="manifest.webmanifest"/>
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-slate-100 flex justify-center items-center min-h-screen overflow-hidden">
@@ -685,5 +687,12 @@
   </div>
 
   <script src="app.js"></script>
+  <script>
+    if ("serviceWorker" in navigator && location.protocol !== "file:") {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(() => {});
+      });
+    }
+  </script>
 </body>
 </html>
