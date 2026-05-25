@@ -74,14 +74,16 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Update persistent bottom navigation highlight capsules
       navItems.forEach(nav => {
-        nav.classList.remove('bg-secondary-container', 'text-on-secondary-container', 'active');
+        nav.classList.remove('active'); // 테두리 클래스 제거
+        nav.style.backgroundColor = ''; // 배경색 초기화
         nav.classList.add('text-on-surface-variant');
         const icon = nav.querySelector('.material-symbols-outlined');
         if (icon) icon.style.fontVariationSettings = "'FILL' 0";
       });
       
       item.classList.remove('text-on-surface-variant');
-      item.classList.add('bg-secondary-container', 'text-on-secondary-container', 'active');
+      item.classList.add('active');
+      item.style.backgroundColor = '#e0e0e0'; // 배경색 변경
       const activeIcon = item.querySelector('.material-symbols-outlined');
       if (activeIcon) activeIcon.style.fontVariationSettings = "'FILL' 1";
       
