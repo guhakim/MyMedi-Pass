@@ -213,10 +213,19 @@ body {
   padding: 8px 16px;
   border-radius: 20px;
   cursor: pointer;
+  color: #1a1a1a;
+}
+.nav-tab-item .material-symbols-outlined,
+.nav-tab-item span:last-child {
+  color: #1a1a1a;
+  transition: color 0.25s ease;
 }
 .nav-tab-item.active {
-  background-color: #e0e0e0; /* 클릭 시 변경될 색상 */
-  transform: scale(1.04);
+  background-color: transparent;
+}
+.nav-tab-item.active .material-symbols-outlined,
+.nav-tab-item.active span:last-child {
+  color: #1a6cf3;
 }
 
 /* 5. Custom Card Styling & Visuals */
