@@ -3,8 +3,6 @@
 > 모바일 신분증과 탈중앙화 DID 기반의 개인 주도형 의료 데이터 플랫폼  
 > 2026 블록체인 & AI 해커톤 | Track 2: MVP 모델 개발 및 시연 부문
 
-[![모바일 앱 바로가기](https://img.shields.io/badge/📱_모바일_앱_바로가기-MyMedi_Pass-0058bc?style=for-the-badge)](https://guhakim.github.io/MyMedi-Pass/)
-
 ---
 
 ## 프로젝트 개요
