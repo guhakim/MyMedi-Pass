@@ -70,7 +70,7 @@ export default function App() {
       timestamp: 'Yesterday, 11:15 AM',
       status: '심사 대기',
       type: 'claim',
-      amount: '$124.00',
+      amount: '₩124.00',
     },
   ]);
 
@@ -117,11 +117,11 @@ export default function App() {
     const claimActivity: ActivityLog = {
       id: `act-${Date.now()}`,
       title: '원클릭 실시간 보험금 청구',
-      description: '시티 치과 의원 ($1,250.00)',
+      description: '시티 치과 의원 (₩1,250.00)',
       timestamp: timestampStr,
       status: '심사 완료',
       type: 'claim',
-      amount: '$1,250.00',
+      amount: '₩1,250.00',
     };
 
     setActivities(prev => [claimActivity, ...prev]);
@@ -170,6 +170,8 @@ export default function App() {
             <ProfileScreen
               onAddNotification={handleAddNotification}
               onIncrementClaim={handleIncrementClaim}
+              activities={activities}
+              recentClaimsCount={recentClaimsCount}
             />
           )}
         </main>
