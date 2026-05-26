@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import { Shield, Sparkles, Receipt, FileText, CheckCircle2, RefreshCw, X, ShieldAlert, BadgeInfo, Mail, User, ShieldCheck, KeyRound, Cpu, Wifi, ClipboardList, CircleCheck, Banknote, Clock, QrCode, Share2, Download } from 'lucide-react';
+import { Shield, Sparkles, Receipt, FileText, CheckCircle2, RefreshCw, X, ShieldAlert, BadgeInfo, Mail, User, ShieldCheck, KeyRound, Cpu, Wifi, ClipboardList, CircleCheck, Banknote, Clock, QrCode, Share2, Download, Calendar, Stethoscope, Syringe } from 'lucide-react';
 import { ActivityLog } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
 import { QRCodeSVG } from 'qrcode.react';
@@ -22,6 +22,7 @@ export default function ProfileScreen({ onAddNotification, onIncrementClaim, act
   const [hasClaimed, setHasClaimed] = useState(false);
   const [showReceipt, setShowReceipt] = useState(false);
   const [showQR, setShowQR] = useState(false);
+  const [showHealth, setShowHealth] = useState(false);
 
   const qrPayload = JSON.stringify({
     did: 'did:omnione:0x3f77ed8fc5ca3a8e932b12ab',
@@ -200,6 +201,28 @@ export default function ProfileScreen({ onAddNotification, onIncrementClaim, act
         </button>
       </div>
 
+      {/* 건강 관리 일정 카드 */}
+      <div className="mx-5">
+        <button
+          onClick={() => setShowHealth(true)}
+          className="w-full bg-gradient-to-br from-emerald-600 to-emerald-800 text-white rounded-3xl p-5 shadow-xl border border-emerald-700/40 flex items-center gap-4 active:scale-[0.98] transition-transform"
+        >
+          <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center border border-white/15 shrink-0">
+            <Calendar size={28} className="text-emerald-200" />
+          </div>
+          <div className="flex-1 text-left">
+            <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-300">HEALTH SCHEDULE</p>
+            <h3 className="text-base font-bold text-white mt-0.5">건강 관리 일정</h3>
+            <p className="text-[11px] text-emerald-200/70 mt-1">정기검진 · 예방접종 리마인더</p>
+          </div>
+          <div className="shrink-0">
+            <div className="bg-white/15 border border-white/20 px-2.5 py-1.5 rounded-xl">
+              <span className="text-xs font-black text-white">D-12</span>
+            </div>
+          </div>
+        </button>
+      </div>
+
       {/* Security Status Card */}
       <div className="mx-5 mb-4 bg-[#031635] text-white rounded-3xl p-6 shadow-xl relative overflow-hidden border border-blue-900/60">
         <div className="absolute top-0 right-0 w-32 h-32 bg-[#0070eb]/15 rounded-full blur-2xl pointer-events-none" />
@@ -281,6 +304,96 @@ export default function ProfileScreen({ onAddNotification, onIncrementClaim, act
           </div>
         );
       })()}
+
+      {/* 건강 관리 일정 모달 */}
+      <AnimatePresence>
+        {showHealth && (
+          <div className="fixed inset-0 z-50 flex items-end justify-center">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowHealth(false)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ opacity: 0, y: 80 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 80 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              className="relative z-10 w-full max-w-sm bg-white rounded-t-3xl pb-10 pt-6 px-6 shadow-2xl"
+            >
+              {/* Handle bar */}
+              <div className="w-10 h-1 bg-gray-200 rounded-full mx-auto mb-5" />
+
+              {/* Header */}
+              <div className="flex justify-between items-center mb-5">
+                <div>
+                  <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-600">HEALTH SCHEDULE</p>
+                  <h3 className="text-lg font-bold text-[#031635]">건강 관리 일정</h3>
+                </div>
+                <button onClick={() => setShowHealth(false)} className="p-2 rounded-xl hover:bg-gray-100 transition">
+                  <X size={18} className="text-slate-500" />
+                </button>
+              </div>
+
+              {/* 정기검진 */}
+              <div className="mb-4">
+                <div className="flex items-center gap-2 mb-2.5">
+                  <Stethoscope size={14} className="text-emerald-600" />
+                  <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">정기검진</span>
+                </div>
+                <div className="space-y-2">
+                  {[
+                    { name: '건강검진 (국가건강검진)', date: '2026-06-07', dday: 'D-12', status: '예약완료', statusColor: 'bg-emerald-50 text-emerald-600 border-emerald-100' },
+                    { name: '치과 스케일링', date: '2026-07-15', dday: 'D-50', status: '예약필요', statusColor: 'bg-amber-50 text-amber-600 border-amber-100' },
+                    { name: '안과 정기검진', date: '2026-08-20', dday: 'D-86', status: '예약필요', statusColor: 'bg-amber-50 text-amber-600 border-amber-100' },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center justify-between bg-slate-50 rounded-2xl px-4 py-3 border border-slate-100">
+                      <div className="flex-1">
+                        <p className="text-xs font-bold text-slate-800">{item.name}</p>
+                        <p className="text-[10px] text-slate-400 mt-0.5 font-mono">{item.date} · {item.dday}</p>
+                      </div>
+                      <span className={`text-[10px] font-bold border px-2 py-0.5 rounded-full shrink-0 ml-2 ${item.statusColor}`}>{item.status}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* 예방접종 */}
+              <div className="mb-5">
+                <div className="flex items-center gap-2 mb-2.5">
+                  <Syringe size={14} className="text-blue-500" />
+                  <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">예방접종</span>
+                </div>
+                <div className="space-y-2">
+                  {[
+                    { name: '독감 예방접종', date: '2026-10-01', dday: 'D-128', status: '권장', statusColor: 'bg-blue-50 text-blue-600 border-blue-100' },
+                    { name: '폐렴구균', date: '2026-11-15', dday: '5년마다', status: '권장', statusColor: 'bg-blue-50 text-blue-600 border-blue-100' },
+                    { name: '대상포진', date: '2027-03-01', dday: '권장', status: '권장', statusColor: 'bg-blue-50 text-blue-600 border-blue-100' },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center justify-between bg-slate-50 rounded-2xl px-4 py-3 border border-slate-100">
+                      <div className="flex-1">
+                        <p className="text-xs font-bold text-slate-800">{item.name}</p>
+                        <p className="text-[10px] text-slate-400 mt-0.5 font-mono">{item.date} · {item.dday}</p>
+                      </div>
+                      <span className={`text-[10px] font-bold border px-2 py-0.5 rounded-full shrink-0 ml-2 ${item.statusColor}`}>{item.status}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* 안내 문구 */}
+              <div className="flex items-start gap-2 bg-emerald-50 rounded-xl px-4 py-3">
+                <ShieldCheck size={14} className="text-emerald-600 shrink-0 mt-0.5" />
+                <p className="text-[11px] text-slate-500 leading-relaxed">
+                  예방 중심 헬스케어 — 정기검진과 예방접종으로 건강을 미리 지키세요.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* QR 신원 공유 모달 */}
       <AnimatePresence>
