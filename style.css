@@ -216,16 +216,16 @@ body {
   color: #1a1a1a;
 }
 .nav-tab-item .material-symbols-outlined,
-.nav-tab-item span:last-child {
-  color: #1a1a1a;
+.nav-tab-item span {
+  color: #1a1a1a !important;
   transition: color 0.25s ease;
 }
 .nav-tab-item.active {
-  background-color: transparent;
+  background-color: transparent !important;
 }
 .nav-tab-item.active .material-symbols-outlined,
-.nav-tab-item.active span:last-child {
-  color: #1a6cf3;
+.nav-tab-item.active span {
+  color: #1a6cf3 !important;
 }
 
 /* 5. Custom Card Styling & Visuals */
