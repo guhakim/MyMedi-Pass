@@ -4,19 +4,34 @@
  */
 
 import React, { useState } from 'react';
-import { Shield, Sparkles, Receipt, FileText, CheckCircle2, RefreshCw, X, ShieldAlert, BadgeInfo, Mail, User, ShieldCheck, Github, ExternalLink } from 'lucide-react';
+import { Shield, Sparkles, Receipt, FileText, CheckCircle2, RefreshCw, X, ShieldAlert, BadgeInfo, Mail, User, ShieldCheck, KeyRound, Cpu, Wifi, ClipboardList, CircleCheck, Banknote, Clock, QrCode, Share2, Download } from 'lucide-react';
+import { ActivityLog } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
+import { QRCodeSVG } from 'qrcode.react';
 
 interface ProfileScreenProps {
   onAddNotification: (msg: string) => void;
   onIncrementClaim: () => void;
+  activities: ActivityLog[];
+  recentClaimsCount: number;
 }
 
-export default function ProfileScreen({ onAddNotification, onIncrementClaim }: ProfileScreenProps) {
+export default function ProfileScreen({ onAddNotification, onIncrementClaim, activities, recentClaimsCount }: ProfileScreenProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStep, setSubmitStep] = useState(0);
   const [hasClaimed, setHasClaimed] = useState(false);
   const [showReceipt, setShowReceipt] = useState(false);
+  const [showQR, setShowQR] = useState(false);
+
+  const qrPayload = JSON.stringify({
+    did: 'did:omnione:0x3f77ed8fc5ca3a8e932b12ab',
+    name: '홍길동',
+    dob: '1982-10-24',
+    gender: 'M',
+    issued: new Date().toISOString().split('T')[0],
+    chain: 'Omnione',
+    verified: true,
+  });
 
   const startClaimFlow = () => {
     setIsSubmitting(true);
@@ -80,7 +95,7 @@ export default function ProfileScreen({ onAddNotification, onIncrementClaim }: P
           </div>
           <div>
             <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider font-mono">청구 금액</span>
-            <p className="text-lg font-black text-[#0070eb] mt-1 font-mono">$1,250.00</p>
+            <p className="text-lg font-black text-[#0070eb] mt-1 font-mono">₩1,250.00</p>
           </div>
           <div>
             <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider font-mono">DID 상태</span>
@@ -163,40 +178,190 @@ export default function ProfileScreen({ onAddNotification, onIncrementClaim }: P
         </div>
       </div>
 
-      {/* GitHub Repository link card */}
-      <div className="mx-5 bg-[#031635] text-white rounded-3xl p-6 shadow-xl relative overflow-hidden border border-blue-900/60">
+      {/* QR 신원 공유 카드 */}
+      <div className="mx-5">
+        <button
+          onClick={() => setShowQR(true)}
+          className="w-full bg-gradient-to-br from-[#031635] to-[#0a2a5e] text-white rounded-3xl p-5 shadow-xl border border-blue-900/40 flex items-center gap-4 active:scale-[0.98] transition-transform"
+        >
+          <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center border border-white/15 shrink-0">
+            <QrCode size={28} className="text-[#60a5fa]" />
+          </div>
+          <div className="flex-1 text-left">
+            <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-blue-300">IDENTITY CARD</p>
+            <h3 className="text-base font-bold text-white mt-0.5">QR 신원 공유 카드</h3>
+            <p className="text-[11px] text-blue-200/70 mt-1">병원 접수 시 QR로 신원 즉시 제출</p>
+          </div>
+          <div className="shrink-0">
+            <div className="w-8 h-8 bg-white/10 rounded-xl flex items-center justify-center">
+              <Share2 size={16} className="text-white" />
+            </div>
+          </div>
+        </button>
+      </div>
+
+      {/* Security Status Card */}
+      <div className="mx-5 mb-4 bg-[#031635] text-white rounded-3xl p-6 shadow-xl relative overflow-hidden border border-blue-900/60">
         <div className="absolute top-0 right-0 w-32 h-32 bg-[#0070eb]/15 rounded-full blur-2xl pointer-events-none" />
-        
-        <div className="flex justify-between items-start mb-4">
+        <div className="absolute bottom-0 left-0 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
+
+        {/* Header */}
+        <div className="flex justify-between items-start mb-5">
           <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white border border-white/10">
-              <Github size={20} className="stroke-[1.8]" />
+            <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center border border-white/10">
+              <Shield size={20} className="text-[#0070eb] stroke-[1.8]" />
             </div>
             <div>
-              <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-blue-300">GITHUB REPOSITORY</span>
-              <h4 className="text-sm font-bold text-white mt-0.5">MyMedi Pass 소스코드</h4>
+              <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-blue-300">SECURITY STATUS</span>
+              <h4 className="text-sm font-bold text-white mt-0.5">보안 인증 현황</h4>
             </div>
           </div>
           <div className="bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-1 rounded-full flex items-center gap-1">
             <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
-            <span className="text-[9px] font-bold text-emerald-400">구독 연동 완료</span>
+            <span className="text-[9px] font-bold text-emerald-400">보호됨</span>
           </div>
         </div>
 
-        <p className="text-xs text-blue-200/80 leading-relaxed mb-4">
-          본 애플리케이션의 소스코드 지적 자산이 연계된 GitHub 저장소 정보입니다. 저장소 구독을 통해 실시간 빌드 가집 장치와 소스 동기화가 활성화되었습니다.
-        </p>
-
-        <a
-          href="https://github.com/guhakim/MyMedi-Pass"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full h-11 bg-white/10 border border-white/20 text-white rounded-xl font-semibold text-xs transition duration-200 active:scale-98 hover:bg-white/15 flex items-center justify-center gap-2"
-        >
-          <span>GitHub 저장소 바로가기</span>
-          <ExternalLink size={13} className="text-blue-300" />
-        </a>
+        {/* Security Items */}
+        <div className="space-y-3">
+          {[
+            { icon: <ShieldCheck size={14} />, label: 'DID 인증', value: '완료', color: 'text-emerald-400' },
+            { icon: <KeyRound size={14} />, label: 'ECC-Secp256r1 서명 키', value: '활성', color: 'text-emerald-400' },
+            { icon: <Cpu size={14} />, label: 'Omnione 노드 연결', value: '42개', color: 'text-blue-300' },
+            { icon: <Wifi size={14} />, label: '마지막 보안 갱신', value: 'Today 09:24 AM', color: 'text-blue-300' },
+          ].map((item, i) => (
+            <div key={i} className="flex items-center justify-between bg-white/5 rounded-xl px-3.5 py-2.5 border border-white/8">
+              <div className="flex items-center gap-2 text-blue-200/70">
+                {item.icon}
+                <span className="text-[11px] font-medium">{item.label}</span>
+              </div>
+              <span className={`text-[11px] font-bold ${item.color}`}>{item.value}</span>
+            </div>
+          ))}
+        </div>
       </div>
+
+      {/* Claim History Card */}
+      {(() => {
+        const claimActivities = activities.filter(a => a.type === 'claim');
+        const completedClaims = claimActivities.filter(a => a.status === '심사 완료').length;
+        const totalAmount = claimActivities.reduce((sum, a) => {
+          const n = parseFloat((a.amount || '₩0').replace(/[₩,]/g, ''));
+          return sum + (isNaN(n) ? 0 : n);
+        }, 0);
+        const avgTime = '3.6초';
+        return (
+          <div className="mx-5 mb-4 bg-white rounded-3xl p-5 shadow-sm border border-slate-100">
+            <div className="flex justify-between items-center mb-4">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center">
+                  <ClipboardList size={18} className="text-[#0070eb]" />
+                </div>
+                <div>
+                  <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-slate-400">CLAIM HISTORY</span>
+                  <h4 className="text-sm font-bold text-slate-800 mt-0.5">청구 내역 요약</h4>
+                </div>
+              </div>
+              <span className="text-[10px] text-slate-400 font-medium">전체 {recentClaimsCount}건</span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2.5">
+              {[
+                { icon: <ClipboardList size={14} className="text-[#0070eb]" />, label: '총 청구 건수', value: `${recentClaimsCount}건`, bg: 'bg-blue-50' },
+                { icon: <CircleCheck size={14} className="text-emerald-500" />, label: '처리 완료', value: `${completedClaims}건`, bg: 'bg-emerald-50' },
+                { icon: <Banknote size={14} className="text-amber-500" />, label: '총 청구 금액', value: totalAmount > 0 ? `₩${totalAmount.toLocaleString()}` : '₩1,250', bg: 'bg-amber-50' },
+                { icon: <Clock size={14} className="text-slate-500" />, label: '평균 처리 시간', value: avgTime, bg: 'bg-slate-50' },
+              ].map((item, i) => (
+                <div key={i} className={`${item.bg} rounded-2xl p-3`}>
+                  <div className="flex items-center gap-1.5 mb-1.5">{item.icon}<span className="text-[10px] text-slate-500 font-medium">{item.label}</span></div>
+                  <p className="text-sm font-black text-slate-800">{item.value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* QR 신원 공유 모달 */}
+      <AnimatePresence>
+        {showQR && (
+          <div className="fixed inset-0 z-50 flex items-end justify-center">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowQR(false)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ opacity: 0, y: 80 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 80 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              className="relative z-10 w-full max-w-sm bg-white rounded-t-3xl pb-10 pt-6 px-6 shadow-2xl"
+            >
+              {/* Handle bar */}
+              <div className="w-10 h-1 bg-gray-200 rounded-full mx-auto mb-5" />
+
+              {/* Header */}
+              <div className="flex justify-between items-center mb-5">
+                <div>
+                  <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#0070eb]">DID IDENTITY</p>
+                  <h3 className="text-lg font-bold text-[#031635]">신원 공유 QR</h3>
+                </div>
+                <button onClick={() => setShowQR(false)} className="p-2 rounded-xl hover:bg-gray-100 transition">
+                  <X size={18} className="text-slate-500" />
+                </button>
+              </div>
+
+              {/* QR Code */}
+              <div className="flex flex-col items-center bg-slate-50 rounded-2xl p-6 border border-slate-100">
+                <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                  <QRCodeSVG
+                    value={qrPayload}
+                    size={180}
+                    level="H"
+                    fgColor="#031635"
+                    imageSettings={{
+                      src: '',
+                      height: 0,
+                      width: 0,
+                      excavate: false,
+                    }}
+                  />
+                </div>
+                <div className="mt-4 text-center">
+                  <p className="text-sm font-bold text-[#031635]">홍길동</p>
+                  <p className="text-[10px] text-slate-400 font-mono mt-0.5">did:omnione:0x3f77ed8f...2b12ab</p>
+                </div>
+              </div>
+
+              {/* Info rows */}
+              <div className="mt-4 space-y-2.5">
+                {[
+                  { label: '생년월일', value: '1982. 10. 24' },
+                  { label: '성별', value: '남성' },
+                  { label: '발급일', value: new Date().toLocaleDateString('ko-KR') },
+                  { label: '체인', value: 'Omnione Chain' },
+                ].map((item) => (
+                  <div key={item.label} className="flex justify-between items-center bg-slate-50 rounded-xl px-4 py-2.5">
+                    <span className="text-xs text-slate-400 font-medium">{item.label}</span>
+                    <span className="text-xs font-bold text-[#031635]">{item.value}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* 안내 문구 */}
+              <div className="mt-4 flex items-start gap-2 bg-blue-50 rounded-xl px-4 py-3">
+                <ShieldCheck size={14} className="text-[#0070eb] shrink-0 mt-0.5" />
+                <p className="text-[11px] text-slate-500 leading-relaxed">
+                  이 QR코드는 Omnione DID로 서명된 일회성 신원 증명입니다. 병원 접수 단말기에 스캔하여 본인 확인을 완료하세요.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* PDF digital receipt drawer mockup modal */}
       <AnimatePresence>
@@ -243,7 +408,7 @@ export default function ProfileScreen({ onAddNotification, onIncrementClaim }: P
                 </div>
 
                 <div className="border-t border-dashed border-slate-300 pt-3 text-slate-700 font-bold space-y-1">
-                  <p className="flex justify-between text-[#0070eb] text-xs"><span>수납 총액:</span> <span>$1,250.00</span></p>
+                  <p className="flex justify-between text-[#0070eb] text-xs"><span>수납 총액:</span> <span>₩1,250.00</span></p>
                   <p className="text-[8px] text-gray-400">HASH: 3f77ed8fc5ca3a8e932b12</p>
                 </div>
 
