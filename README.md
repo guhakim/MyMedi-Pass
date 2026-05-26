@@ -17,7 +17,7 @@
 
 ## MVP 모바일 인터페이스
 
-![MyMedi Pass Mobile MVP Interface](docs/assets/mymedi-pass-mobile-mvp.png)
+<img width="1906" height="918" alt="CleanShot 2026-05-26 at 18 31 02@2x" src="https://github.com/user-attachments/assets/f5718305-a033-4afe-90d9-b944f0c4516d" />
 
 마이메디 패스 MVP의 핵심 모바일 인터페이스는 백엔드 시뮬레이터의 3단계 프로세스와 실시간 랭킹 기능을 사용자가 직관적으로 이해할 수 있도록 설계했습니다. 전체 화면은 의료 서비스의 신뢰감과 블록체인 기반 보안 이미지를 함께 전달하는 **Clinical Integrity System** 디자인 방향을 따릅니다.
 
